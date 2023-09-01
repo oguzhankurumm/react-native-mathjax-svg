@@ -25,7 +25,7 @@ $ expo install react-native-svg
 ```
 
 ## Usage
-**Attention only accepts in-line mathematics.** [see](http://docs.mathjax.org/en/latest/basic/mathematics.html)
+**Please note that this component only accepts in-line mathematics.** [Learn more](http://docs.mathjax.org/en/latest/basic/mathematics.html)
 ```jsx
 import { MathJaxSvg } from 'react-native-mathjax-text-svg';
 ...
@@ -63,9 +63,9 @@ return (
 
 |  Props            | Default                    | Description                             |
 | ----------------- | -------------------------- | --------------------------------------- |
-|  fontSize         | 14                         | Font size to display formula. Note that it will apply to regular text. Regular text accept inline style if html has inline style        |
-|  color            | "#000000"                  | Color of formula to display. Note that it will apply to regular text. Regular text accept inline style if html has inline style             |
-|  fontCache        | false                      | MathJax will cache font paths on an express-by-expression (each expression has its own cache within the SVG image itself), which makes the SVG self-contained, but still allows for some savings if characters are repeated               |
+|  fontSize         | 14                         | The font size for displaying the formula. Note that it will also apply to regular text. Regular text can accept inline styles if HTML has inline styles.        |
+|  color            | "#000000"                  | The color of the formula to display. Note that it will also apply to regular text. Regular text can accept inline styles if HTML has inline styles.             |
+|  fontCache        | false                      | MathJax will cache font paths on an expression-by-expression basis (each expression has its own cache within the SVG image itself), which makes the SVG self-contained, but still allows for some savings if characters are repeated.               |
 |  style            | `{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', flexShrink: 1 } `          | Container style             |
 
 
