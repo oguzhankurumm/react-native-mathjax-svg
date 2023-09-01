@@ -8,7 +8,7 @@ Only TeX or LaTeX is converted to svg. HTML is converted to native `<Text/>` com
 
 #### With react-native-cli
 ```bash
-$ yarn add react-native-mathjax-svg
+$ yarn add react-native-mathjax-text-svg
 ```
 ```bash
 $ yarn add react-native-svg
@@ -18,7 +18,7 @@ $ cd ios && pod install
 ```
 #### With expo-cli
 ```bash
-$ expo install react-native-mathjax-svg 
+$ expo install react-native-mathjax-text-svg 
 ```
 ```bash
 $ expo install react-native-svg
@@ -27,7 +27,7 @@ $ expo install react-native-svg
 ## Usage
 **Attention only accepts in-line mathematics.** [see](http://docs.mathjax.org/en/latest/basic/mathematics.html)
 ```jsx
-import { MathJaxSvg } from 'react-native-mathjax-svg';
+import { MathJaxSvg } from 'react-native-mathjax-text-svg';
 ...
 
 <MathJaxSvg 
@@ -40,7 +40,7 @@ import { MathJaxSvg } from 'react-native-mathjax-svg';
 ```
 ## Using TeX or LaTeX with html
 ```jsx
-import { MathJaxSvg } from 'react-native-mathjax-svg';
+import { MathJaxSvg } from 'react-native-mathjax-text-svg';
 
 return (
   ...
@@ -59,7 +59,7 @@ return (
 );
 ```
 ### Output
-<img width="600" src="https://raw.githubusercontent.com/oguzhankurumm/react-native-mathjax-svg/main/export.png"/>
+<img width="600" src="https://raw.githubusercontent.com/oguzhankurumm/react-native-mathjax-text-svg/main/export.png"/>
 
 |  Props            | Default                    | Description                             |
 | ----------------- | -------------------------- | --------------------------------------- |
