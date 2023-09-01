@@ -1,4 +1,4 @@
-declare module 'react-native-mathjax-html-to-svg' {
+declare module 'react-native-mathjax-text-svg' {
     import {TextStyle, ViewStyle} from 'react-native';
     import {ReactNode} from 'react';
 

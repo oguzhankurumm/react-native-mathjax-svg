@@ -11,7 +11,7 @@
     "react-native",
     "react-native-mathjax",
     "react-native-mathjax-svg",
-    "mathjax-html-to-svg",
+    "mathjax-text-svg",
     "mathjax",
     "svg",
     "mathjax-svg"
