@@ -1,6 +1,6 @@
-# React Native component to display mathematics using MathJax without WebView
+# React Native component for rendering mathematical expressions in HTML using the power of MathJax without WebView
 
-A react native component used to easily display and handle mathematics (TeX or LaTeX) in html. The library does not use Web View.
+An essential React Native component for rendering mathematical expressions in HTML using the power of MathJax. Harness the capabilities of MathJax effortlessly. Supercharge your app with effortless MathJax functionality, all without the need for react-native-webview.
 
 Only TeX or LaTeX is converted to svg. HTML is converted to native `<Text/>` component
 
