@@ -2,7 +2,7 @@
 
 An essential React Native component for rendering mathematical expressions in HTML using the power of MathJax. Harness the capabilities of MathJax effortlessly. Supercharge your app with effortless MathJax functionality, all without the need for react-native-webview.
 
-Only TeX or LaTeX is converted to svg. HTML is converted to native `<Text/>` component
+With this component, you can convert TeX or LaTeX equations to SVG and HTML to native <Text/> components effortlessly.
 
 ## Installation
 
