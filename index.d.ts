@@ -1,6 +1,6 @@
 declare module 'react-native-mathjax-text-svg' {
-    import {TextStyle, ViewStyle} from 'react-native';
-    import {ReactNode} from 'react';
+    import { ReactNode } from 'react';
+    import { TextStyle, ViewStyle } from 'react-native';
 
     type Props = {
         fontSize?: number,
@@ -11,5 +11,5 @@ declare module 'react-native-mathjax-text-svg' {
         children?: ReactNode,
     };
 
-    export function MathJaxSvg(props: Props) ;
+    export function MathJaxSvg(props: Props);
 }
