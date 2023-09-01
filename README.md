@@ -59,7 +59,7 @@ return (
 );
 ```
 ### Output
-<img width="600" src="https://raw.githubusercontent.com/webyonet/react-native-mathjax-svg/main/export.png"/>
+<img width="600" src="https://raw.githubusercontent.com/oguzhankurumm/react-native-mathjax-svg/main/export.png"/>
 
 |  Props            | Default                    | Description                             |
 | ----------------- | -------------------------- | --------------------------------------- |

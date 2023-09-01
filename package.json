@@ -1,10 +1,10 @@
 {
-  "name": "react-native-mathjax-html-to-svg",
-  "version": "1.1.0",
+  "name": "react-native-mathjax-svg",
+  "version": "1.0",
   "description": "React Native component to display mathematics in html using MathJax. Uses [MathJax](https://github.com/mathjax/)",
   "repository": {
     "type": "git",
-    "url": "git@github.com:webyonet/react-native-mathjax-html-to-svg.git"
+    "url": "git@github.com:oguzhankurumm/react-native-mathjax-svg.git"
   },
   "main": "index.js",
   "keywords": [
@@ -17,13 +17,13 @@
     "mathjax-svg"
   ],
   "author": {
-    "name": "webyonet",
-    "email": "webyonet@hotmail.com"
+    "name": "Oguzhan Kurum",
+    "email": "oguzhankurumdev@gmail.com"
   },
   "dependencies": {
     "html-entities": "^2.4.0",
     "mhchemparser": "^4.2.1"
   },
-  "homepage": "https://github.com/webyonet/react-native-mathjax-html-to-svg.git",
+  "homepage": "https://github.com/oguzhankurumm/react-native-mathjax-svg.git",
   "license": "MIT"
 }
