@@ -82,7 +82,7 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   svgText = applyColor(svgText, color);
 
   return (
-    <Text>
+    <Text allowFontScaling={false}>
       <SvgFromXml xml={svgText} />
     </Text>
   );
@@ -114,7 +114,7 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
     <Fragment>
       {
         !!text ?
-          <Text key={`sub-${index}`} style={[{ fontSize: (fontSize * 2), color, ...rnStyle }, textStyle]}>{text}</Text>
+          <Text allowFontScaling={false} key={`sub-${index}`} style={[{ fontSize: (fontSize * 2), color, ...rnStyle }, textStyle]}>{text}</Text>
           : (
             item?.kind === 'mjx-container' ? (
               <GenerateSvgComponent key={`sub-${index}`} item={item} fontSize={fontSize} color={color} />
