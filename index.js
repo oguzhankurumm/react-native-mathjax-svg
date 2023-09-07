@@ -1,4 +1,4 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import { SvgFromXml } from 'react-native-svg';
 import { decode } from 'html-entities';
@@ -82,8 +82,12 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   svgText = applyColor(svgText, color);
 
   return (
-    <Text allowFontScaling={false}>
-      <SvgFromXml xml={svgText} />
+
+    <Text
+      allowFontScaling={false}
+    >
+      <SvgFromXml
+        xml={svgText} />
     </Text>
   );
 };
@@ -104,20 +108,41 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
 
   if (item?.kind === '#text') {
     text = decode(adaptor.value(item) || '');
+
+
+    if (text.startsWith(".")) {
+      const afterDot = text.substring(1).trim();
+
+      if (afterDot !== "") {
+        text = afterDot;
+      }
+
+    }
+
     rnStyle = (parentStyle ? parentStyle : null);
   } else if (item?.kind === 'br') {
+
     text = '\n\n';
     rnStyle = { width: '100%', overflow: 'hidden', height: 0 };
   }
 
+
+
   return (
-    <Fragment>
+    <View style={{
+      alignSelf: "baseline",
+      height: "auto",
+      maxHeight: (text?.includes('\n\n') || text?.endsWith('\n')) ? "30%" : "100%"
+    }}>
       {
         !!text ?
-          <Text allowFontScaling={false} key={`sub-${index}`} style={[{ fontSize: (fontSize * 2), color, ...rnStyle }, textStyle]}>{text}</Text>
+          <Text allowFontScaling={false} key={`sub-${index}`} style={[{
+            fontSize: (fontSize * 2),
+          }, textStyle]}>{text}</Text>
           : (
             item?.kind === 'mjx-container' ? (
               <GenerateSvgComponent key={`sub-${index}`} item={item} fontSize={fontSize} color={color} />
+
             ) : (
               item.children?.length ?
                 (
@@ -129,7 +154,7 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
             )
           )
       }
-    </Fragment>
+    </View>
   );
 };
 
@@ -162,15 +187,19 @@ const ConvertToComponent = ({ texString = '', fontSize = 12, fontCache = false, 
   }
 
   const nodes = adaptor.childNodes(adaptor.body(html.document));
-
   return (
-    <Fragment>
+    <View style={{
+      flexDirection: "column",
+      flexWrap: "wrap",
+      gap: 5,
+      alignItems: "flex-start",
+    }}>
       {
         nodes?.map((item, index) => (
           <GenerateTextComponent key={index} textStyle={textStyle} item={item} index={index} fontSize={fontSize} color={color} />
         ))
       }
-    </Fragment>
+    </View>
   );
 };
 
@@ -182,7 +211,7 @@ export const MathJaxSvg = memo((props) => {
   const style = props.style ? props.style : null;
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', flexShrink: 1, alignItems: 'center', ...style }}>
+    <View style={{ flexWrap: 'wrap', flexShrink: 1, ...style }}>
       {
         textext ? (
           <ConvertToComponent textStyle={props.textStyle} fontSize={fontSize} color={color} texString={textext} fontCache={fontCache} />
