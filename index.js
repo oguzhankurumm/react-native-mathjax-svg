@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableWithoutFeedback, View } from "react-native";
 import { SvgFromXml } from "react-native-svg";
 
 import { decode } from "html-entities";
@@ -195,6 +195,7 @@ const GenerateTextComponent = ({
     maxHeight: text?.includes("\n\n") || text?.endsWith("\n") ? "30%" : "100%",
     display: text?.trim() === "" ? "none" : "flex",
     marginVertical: 1,
+    flexGrow: 1,
   };
 
   const scrollContainerStyle = {
@@ -217,21 +218,24 @@ const GenerateTextComponent = ({
         showsHorizontalScrollIndicator={false}
         persistentScrollbar={false}
       >
-        <View style={scrollContainerStyle}>
-          {checkWidth && (
-            <Text
-              style={{
-                flexDirection: "row",
-                color: scrollIconColor,
-                paddingRight: 10,
-              }}
-            >
-              {" "}
-              {">>"}
-            </Text>
-          )}
-          {content}
-        </View>
+        <TouchableWithoutFeedback>
+          <View style={scrollContainerStyle}>
+            {checkWidth && (
+              <Text
+                style={{
+                  flexDirection: "row",
+                  color: scrollIconColor,
+                  paddingRight: 10,
+                  alignSelf: "center",
+                }}
+              >
+                {" "}
+                {">>"}
+              </Text>
+            )}
+            {content}
+          </View>
+        </TouchableWithoutFeedback>
       </ScrollView>
     );
   } else {
