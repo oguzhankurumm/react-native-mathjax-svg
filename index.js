@@ -1,47 +1,51 @@
-import React, { memo } from 'react';
-import { Text, View } from 'react-native';
-import { SvgFromXml } from 'react-native-svg';
-import { decode } from 'html-entities';
-import { cssStringToRNStyle } from './HTMLStyles';
+import React, { memo } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { SvgFromXml } from "react-native-svg";
 
-const mathjax = require('./mathjax/mathjax').mathjax;
-const TeX = require('./mathjax/input/tex').TeX;
-const SVG = require('./mathjax/output/svg').SVG;
-const liteAdaptor = require('./mathjax/adaptors/liteAdaptor').liteAdaptor;
-const RegisterHTMLHandler = require('./mathjax/handlers/html').RegisterHTMLHandler;
+import { decode } from "html-entities";
+import { cssStringToRNStyle } from "./HTMLStyles";
 
-const AllPackages = require('./mathjax/input/tex/AllPackages').AllPackages;
+const mathjax = require("./mathjax/mathjax").mathjax;
+const TeX = require("./mathjax/input/tex").TeX;
+const SVG = require("./mathjax/output/svg").SVG;
+const liteAdaptor = require("./mathjax/adaptors/liteAdaptor").liteAdaptor;
+const RegisterHTMLHandler =
+  require("./mathjax/handlers/html").RegisterHTMLHandler;
 
-const packageList = AllPackages.sort().join(', ').split(/\s*,\s*/);
+const AllPackages = require("./mathjax/input/tex/AllPackages").AllPackages;
 
-require('./mathjax/util/entities/all.js');
+const packageList = AllPackages.sort()
+  .join(", ")
+  .split(/\s*,\s*/);
+
+require("./mathjax/util/entities/all.js");
 
 const adaptor = liteAdaptor();
 
 RegisterHTMLHandler(adaptor);
 
 const tagToStyle = {
-  u: { textDecorationLine: 'underline' },
-  ins: { textDecorationLine: 'underline' },
-  s: { textDecorationLine: 'line-through' },
-  del: { textDecorationLine: 'line-through' },
-  b: { fontWeight: 'bold' },
-  strong: { fontWeight: 'bold' },
-  i: { fontStyle: 'italic' },
-  cite: { fontStyle: 'italic' },
-  dfn: { fontStyle: 'italic' },
-  em: { fontStyle: 'italic' },
-  mark: { backgroundColor: 'yellow' },
+  u: { textDecorationLine: "underline" },
+  ins: { textDecorationLine: "underline" },
+  s: { textDecorationLine: "line-through" },
+  del: { textDecorationLine: "line-through" },
+  b: { fontWeight: "bold" },
+  strong: { fontWeight: "bold" },
+  i: { fontStyle: "italic" },
+  cite: { fontStyle: "italic" },
+  dfn: { fontStyle: "italic" },
+  em: { fontStyle: "italic" },
+  mark: { backgroundColor: "yellow" },
   small: { fontSize: 8 },
 };
 
-const getScale = _svgString => {
-  const svgString = _svgString.match(/<svg([^\>]+)>/gi).join('');
+const getScale = (_svgString) => {
+  const svgString = _svgString.match(/<svg([^\>]+)>/gi).join("");
 
-  let [width, height] = (svgString || '')
+  let [width, height] = (svgString || "")
     .replace(
       /.* width=\"([\d\.]*)[ep]x\".*height=\"([\d\.]*)[ep]x\".*/gi,
-      '$1,$2'
+      "$1,$2"
     )
     .split(/\,/gi);
   [width, height] = [parseFloat(width), parseFloat(height)];
@@ -60,8 +64,14 @@ const applyScale = (svgString, [width, height]) => {
     `$1${width}$3`
   );
 
-  retSvgString = retSvgString.replace(/(<svg[^\>]+width=\")([0]+[ep]?x?)(\"[^\>]+>)/ig, '$10$3');
-  retSvgString = retSvgString.replace(/(<svg[^\>]+height=\")([0]+[ep]?x?)(\"[^\>]+>)/ig, '$10$3');
+  retSvgString = retSvgString.replace(
+    /(<svg[^\>]+width=\")([0]+[ep]?x?)(\"[^\>]+>)/gi,
+    "$10$3"
+  );
+  retSvgString = retSvgString.replace(
+    /(<svg[^\>]+height=\")([0]+[ep]?x?)(\"[^\>]+>)/gi,
+    "$10$3"
+  );
 
   return retSvgString;
 };
@@ -75,28 +85,37 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
 
   const [width, height] = getScale(svgText);
 
-  svgText = svgText.replace(/font-family=\"([^\"]*)\"/gmi, '');
+  svgText = svgText.replace(/font-family=\"([^\"]*)\"/gim, "");
 
-  svgText = applyScale(svgText, [width * fontSize / 1.2, height * fontSize]);
+  svgText = applyScale(svgText, [(width * fontSize) / 1.1, height * fontSize]);
 
   svgText = applyColor(svgText, color);
 
   return (
-
-    <Text
-      allowFontScaling={false}
-    >
-      <SvgFromXml
-        xml={svgText} />
+    <Text allowFontScaling={false}>
+      <SvgFromXml xml={svgText} />
     </Text>
   );
 };
 
-const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = null, textStyle }) => {
+const GenerateTextComponent = ({
+  fontSize,
+  color,
+  index,
+  item,
+  parentStyle = null,
+  textStyle,
+  scrollBorderColor,
+  scrollIconColor,
+}) => {
   let rnStyle = null;
   let text = null;
 
-  if (item?.kind !== '#text' && item?.kind !== 'mjx-container' && item?.kind !== '#comment') {
+  if (
+    item?.kind !== "#text" &&
+    item?.kind !== "mjx-container" &&
+    item?.kind !== "#comment"
+  ) {
     let htmlStyle = adaptor.allStyles(item) || null;
 
     if (htmlStyle) {
@@ -106,9 +125,8 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
     rnStyle = { ...(tagToStyle[item?.kind] || null), ...rnStyle };
   }
 
-  if (item?.kind === '#text') {
-    text = decode(adaptor.value(item) || '');
-
+  if (item?.kind === "#text") {
+    text = decode(adaptor.value(item) || "");
 
     if (text.startsWith(".")) {
       const afterDot = text.substring(1).trim();
@@ -116,107 +134,212 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
       if (afterDot !== "") {
         text = afterDot;
       }
-
     }
 
-    rnStyle = (parentStyle ? parentStyle : null);
-  } else if (item?.kind === 'br') {
-
-    text = '\n\n';
-    rnStyle = { width: '100%', overflow: 'hidden', height: 0 };
+    rnStyle = parentStyle ? parentStyle : null;
+  } else if (item?.kind === "br") {
+    text = "\n\n";
+    rnStyle = { width: "100%", overflow: "hidden", height: 0 };
   }
 
+  const cleanText = text
+    ?.split(/\r?\n/)
+    .filter((line) => line.trim() !== "")
+    .join("\n")
+    .replace(/\.\n/g, ". ");
 
+  const content = !!cleanText ? (
+    <Text
+      allowFontScaling={false}
+      key={`sub-${index}`}
+      style={[
+        {
+          fontSize: fontSize * 2,
+          display: cleanText?.trim() === "" ? "none" : "flex",
+          maxHeight: "auto",
+        },
+        textStyle,
+      ]}
+    >
+      {cleanText}
+    </Text>
+  ) : item?.kind === "mjx-container" ? (
+    <GenerateSvgComponent
+      key={`sub-${index}`}
+      item={item}
+      fontSize={fontSize}
+      color={color}
+    />
+  ) : item.children?.length ? (
+    item.children.map((subItem, subIndex) => (
+      <GenerateTextComponent
+        key={`sub-${index}-${subIndex}`}
+        color={color}
+        fontSize={fontSize}
+        item={subItem}
+        index={subIndex}
+        parentStyle={rnStyle}
+      />
+    ))
+  ) : null;
 
-  return (
-    <View style={{
-      alignSelf: "baseline",
-      height: "auto",
-      maxHeight: (text?.includes('\n\n') || text?.endsWith('\n')) ? "30%" : "100%"
-    }}>
-      {
-        !!text ?
-          <Text allowFontScaling={false} key={`sub-${index}`} style={[{
-            fontSize: (fontSize * 2),
-          }, textStyle]}>{text}</Text>
-          : (
-            item?.kind === 'mjx-container' ? (
-              <GenerateSvgComponent key={`sub-${index}`} item={item} fontSize={fontSize} color={color} />
+  const svgItemWidth =
+    item?.children !== undefined
+      ? Number((item?.children[0].attributes.width).split("ex")[0])
+      : 0;
+  const checkWidth = Boolean(svgItemWidth > 40);
 
-            ) : (
-              item.children?.length ?
-                (
-                  item.children.map((subItem, subIndex) => (
-                    <GenerateTextComponent key={`sub-${index}-${subIndex}`} color={color} fontSize={fontSize} item={subItem} index={subIndex} parentStyle={rnStyle} />
-                  ))
-                )
-                : null
-            )
-          )
-      }
-    </View>
-  );
+  const containerStyle = {
+    alignSelf: "baseline",
+    height: "auto",
+    maxHeight: text?.includes("\n\n") || text?.endsWith("\n") ? "30%" : "100%",
+    display: text?.trim() === "" ? "none" : "flex",
+    marginVertical: 1,
+  };
+
+  const scrollContainerStyle = {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: scrollBorderColor,
+    borderStyle: "dashed",
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    paddingVertical: 10,
+    paddingRight: 10,
+  };
+
+  if (item?.kind === "mjx-container" && checkWidth) {
+    return (
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={containerStyle}
+        scrollIndicatorInsets={{ top: 30 }}
+        showsHorizontalScrollIndicator={false}
+        persistentScrollbar={false}
+      >
+        <View style={scrollContainerStyle}>
+          {checkWidth && (
+            <Text
+              style={{
+                flexDirection: "row",
+                color: scrollIconColor,
+                paddingRight: 10,
+              }}
+            >
+              {" "}
+              {">>"}
+            </Text>
+          )}
+          {content}
+        </View>
+      </ScrollView>
+    );
+  } else {
+    return <View style={containerStyle}>{content}</View>;
+  }
 };
 
-const ConvertToComponent = ({ texString = '', fontSize = 12, fontCache = false, color, textStyle }) => {
+const ConvertToComponent = ({
+  texString = "",
+  fontSize = 12,
+  fontCache = false,
+  color,
+  textStyle,
+  scrollBorderColor,
+  scrollIconColor,
+}) => {
   if (!texString) {
-    return '';
+    return "";
   }
 
   const tex = new TeX({
     packages: packageList,
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']],
-    processEscapes: true
+    inlineMath: [
+      ["$", "$"],
+      ["\\(", "\\)"],
+    ],
+    displayMath: [
+      ["$$", "$$"],
+      ["\\[", "\\]"],
+    ],
+    processEscapes: true,
   });
 
   const svg = new SVG({
-    fontCache: fontCache ? 'local' : 'none',
+    fontCache: fontCache ? "local" : "none",
     mtextInheritFont: true,
     merrorInheritFont: true,
   });
 
-  const html = mathjax.document(texString, { InputJax: tex, OutputJax: svg, renderActions: { assistiveMml: [] } });
+  const html = mathjax.document(texString, {
+    InputJax: tex,
+    OutputJax: svg,
+    renderActions: { assistiveMml: [] },
+  });
 
   html.render();
 
   if (Array.from(html.math).length === 0) {
     adaptor.remove(html.outputJax.svgStyles);
-    const cache = adaptor.elementById(adaptor.body(html.document), 'MJX-SVG-global-cache');
+    const cache = adaptor.elementById(
+      adaptor.body(html.document),
+      "MJX-SVG-global-cache"
+    );
     if (cache) adaptor.remove(cache);
   }
 
   const nodes = adaptor.childNodes(adaptor.body(html.document));
   return (
-    <View style={{
-      flexDirection: "column",
-      flexWrap: "wrap",
-      gap: 5,
-      alignItems: "flex-start",
-    }}>
-      {
-        nodes?.map((item, index) => (
-          <GenerateTextComponent key={index} textStyle={textStyle} item={item} index={index} fontSize={fontSize} color={color} />
-        ))
-      }
+    <View
+      style={{
+        flexDirection: "column",
+        flexWrap: "wrap",
+        gap: 5,
+        alignItems: "flex-start",
+      }}
+    >
+      {nodes?.map((item, index) => (
+        <GenerateTextComponent
+          key={index}
+          textStyle={textStyle}
+          item={item}
+          index={index}
+          fontSize={fontSize}
+          color={color}
+          scrollBorderColor={scrollBorderColor}
+          scrollIconColor={scrollIconColor}
+        />
+      ))}
     </View>
   );
 };
 
 export const MathJaxSvg = memo((props) => {
-  const textext = props.children || '';
+  const textext = props.children || "";
   const fontSize = props.fontSize ? props.fontSize / 2 : 14;
-  const color = props.color ? props.color : 'black';
+  const color = props.color ? props.color : "black";
   const fontCache = props.fontCache;
   const style = props.style ? props.style : null;
+  const scrollIconColor = props.scrollIconColor
+    ? props.scrollIconColor
+    : "white";
+  const scrollBorderColor = props.scrollBorderColor
+    ? props.scrollBorderColor
+    : "white";
 
   return (
-    <View style={{ flexWrap: 'wrap', flexShrink: 1, ...style }}>
-      {
-        textext ? (
-          <ConvertToComponent textStyle={props.textStyle} fontSize={fontSize} color={color} texString={textext} fontCache={fontCache} />
-        ) : null
-      }
+    <View style={{ flexWrap: "wrap", ...style }}>
+      {textext ? (
+        <ConvertToComponent
+          textStyle={props.textStyle}
+          fontSize={fontSize}
+          color={color}
+          texString={textext}
+          fontCache={fontCache}
+          scrollBorderColor={scrollBorderColor}
+          scrollIconColor={scrollIconColor}
+        />
+      ) : null}
     </View>
   );
 });
