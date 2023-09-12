@@ -160,6 +160,7 @@ const GenerateTextComponent = ({
         },
         textStyle,
       ]}
+      textBreakStrategy="highQuality"
     >
       {cleanText}
     </Text>
@@ -192,7 +193,6 @@ const GenerateTextComponent = ({
   const containerStyle = {
     alignSelf: "baseline",
     height: "auto",
-    maxHeight: text?.includes("\n\n") || text?.endsWith("\n") ? "30%" : "100%",
     display: text?.trim() === "" ? "none" : "flex",
     marginVertical: 1,
     flexGrow: 1,
