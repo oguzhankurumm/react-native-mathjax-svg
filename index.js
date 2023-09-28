@@ -86,7 +86,8 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   const [width, height] = getScale(svgText);
 
   svgText = svgText.replace(/font-family=\"([^\"]*)\"/gim, "");
-
+  svgText = svgText.replace(/<rect/g, '<rect fill="transparent"')
+  
   svgText = applyScale(svgText, [(width * fontSize) / 1.1, height * fontSize]);
 
   svgText = applyColor(svgText, color);
