@@ -86,10 +86,16 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   const [width, height] = getScale(svgText);
 
   svgText = svgText.replace(/font-family=\"([^\"]*)\"/gim, "");
-  svgText = svgText.replace(/<rect/g, '<rect fill="transparent"')
-  
-  svgText = applyScale(svgText, [(width * fontSize) / 1.1, height * fontSize]);
+  svgText = svgText.replace(
+    /<rect/g,
+    '<rect fill="transparent" stroke="white" stroke-width="30" '
+  );
+  svgText = svgText.replace(/fill="([^\"]*)"/gim, `fill=${color}`);
 
+  svgText = svgText.replace(/\\llbracket/g, "⟦");
+  svgText = svgText.replace(/\\rrbracket/g, "⟧");
+
+  svgText = applyScale(svgText, [(width * fontSize) / 1.1, height * fontSize]);
   svgText = applyColor(svgText, color);
 
   return (
