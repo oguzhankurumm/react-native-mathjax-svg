@@ -88,9 +88,8 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   svgText = svgText.replace(/font-family=\"([^\"]*)\"/gim, "");
   svgText = svgText.replace(
     /<rect/g,
-    '<rect fill="transparent" stroke="white" stroke-width="30" '
+    `<rect fill="transparent" stroke=${color} stroke-width="30"`
   );
-  svgText = svgText.replace(/fill="([^\"]*)"/gim, `fill=${color}`);
 
   svgText = svgText.replace(/\\llbracket/g, "⟦");
   svgText = svgText.replace(/\\rrbracket/g, "⟧");
