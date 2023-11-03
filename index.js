@@ -88,8 +88,11 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   svgText = svgText.replace(/font-family=\"([^\"]*)\"/gim, "");
   svgText = svgText.replace(
     /<rect/g,
-    `<rect fill="transparent" stroke=${color} stroke-width="30"`
+    '<rect fill="transparent" stroke="white" stroke-width="30" '
   );
+  //to hide for tables
+  svgText = svgText.replace(/<g[^>]*data-mml-node="merror"[^>]*>/g, "");
+  svgText = svgText.replace(/fill="([^\"]*)"/gim, `fill=${color}`);
 
   svgText = svgText.replace(/\\llbracket/g, "⟦");
   svgText = svgText.replace(/\\rrbracket/g, "⟧");
@@ -131,7 +134,7 @@ const GenerateTextComponent = ({
     rnStyle = { ...(tagToStyle[item?.kind] || null), ...rnStyle };
   }
 
-  if (item?.kind === "#text") {
+  if (item?.kind === "#text" || item?.kind === "span") {
     text = decode(adaptor.value(item) || "");
 
     if (text.startsWith(".")) {
@@ -152,7 +155,11 @@ const GenerateTextComponent = ({
     ?.split(/\r?\n/)
     .filter((line) => line.trim() !== "")
     .join("\n")
-    .replace(/\.\n/g, ". ");
+    .replace(/\.\n/g, ". ")
+    .replace(/hline/g, "")
+    .replace(/end{tabular}/g, "")
+    .replace(/begin{tabular}/g, "")
+    .replace(/\\/g, "");
 
   const content = !!cleanText ? (
     <Text
@@ -191,9 +198,12 @@ const GenerateTextComponent = ({
   ) : null;
 
   const svgItemWidth =
-    item?.children !== undefined
-      ? Number((item?.children[0].attributes.width).split("ex")[0])
-      : 0;
+    item &&
+    item?.children !== undefined &&
+    item.children[0].attributes?.width !== undefined
+      ? Number((item?.children[0]?.attributes?.width).split("ex")[0])
+      : 1;
+
   const checkWidth = Boolean(svgItemWidth > 40);
 
   const containerStyle = {
