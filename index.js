@@ -151,15 +151,28 @@ const GenerateTextComponent = ({
     rnStyle = { width: "100%", overflow: "hidden", height: 0 };
   }
 
+  const [boldTextRanges, setBoldTextRanges] = React.useState([]);
+
+  React.useEffect(() => {
+    const regex = /\*\*(.*?)\*\*/g;
+    const matches = [];
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      matches.push({ start: match.index, end: regex.lastIndex });
+    }
+    setBoldTextRanges(matches);
+  }, [text]);
+
   const cleanText = text
     ?.split(/\r?\n/)
     .filter((line) => line.trim() !== "")
     .join("\n")
-    .replace(/\.\n/g, ". ")
+    .replace(/\.\n/g, ".\n ") //move down one line after the dot mark.
     .replace(/hline/g, "")
     .replace(/end{tabular}/g, "")
     .replace(/begin{tabular}/g, "")
-    .replace(/\\/g, "");
+    .replace(/\\/g, "")
+    .replace(/\*\*(.*?)\*\*/g, (_, p1) => `@+#${p1}@+#`);
 
   const content = !!cleanText ? (
     <Text
@@ -175,7 +188,17 @@ const GenerateTextComponent = ({
       ]}
       textBreakStrategy="highQuality"
     >
-      {cleanText}
+      {cleanText.split("@+#").map((chunk, i) => {
+        if (i % 2 === 0) {
+          return chunk;
+        } else {
+          return (
+            <Text key={`bold-${i}`} style={{ fontWeight: "700" }}>
+              {chunk}
+            </Text>
+          );
+        }
+      })}
     </Text>
   ) : item?.kind === "mjx-container" ? (
     <GenerateSvgComponent
