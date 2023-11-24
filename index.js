@@ -172,7 +172,10 @@ const GenerateTextComponent = ({
     .replace(/end{tabular}/g, "")
     .replace(/begin{tabular}/g, "")
     .replace(/\\/g, "")
-    .replace(/\*\*(.*?)\*\*/g, (_, p1) => `@+#${p1}@+#`);
+    .replace(/\*\*(.*?)\*\*/g, (_, p1) => `@+${p1}@+`)
+    .replace(/###(.*?)/g, (_, p1) => `@+${p1}@+`)
+    .replace(/##(.*?)/g, (_, p1) => `@+${p1}@+`)
+    .replace(/#(.*?)/g, (_, p1) => `@+${p1}@+`);
 
   const content = !!cleanText ? (
     <Text
