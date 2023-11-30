@@ -87,9 +87,10 @@ const GenerateSvgComponent = ({ item, fontSize, color, setIsTabular }) => {
 
   svgText = svgText.replace(/font-family=\"([^\"]*)\"/gim, "");
   svgText = svgText.replace(
-    /<rect\b[^>]*>/g,
+    /<rect[^>]*data-frame="true"[^>]*>/g,
     '<rect fill="transparent" stroke="white" stroke-width="30">'
   );
+
   //to hide for tables
   svgText = svgText.replace(/<g[^>]*data-mml-node="merror"[^>]*>/g, "");
   svgText = svgText.replace(/fill="([^\"]*)"/gim, `fill=${color}`);
@@ -101,7 +102,10 @@ const GenerateSvgComponent = ({ item, fontSize, color, setIsTabular }) => {
   svgText = applyColor(svgText, color);
 
   const isTabular = svgText.includes("tabular");
-  setIsTabular(isTabular);
+
+  React.useEffect(() => {
+    setIsTabular(isTabular);
+  }, [isTabular]);
 
   return (
     <Text allowFontScaling={false}>
